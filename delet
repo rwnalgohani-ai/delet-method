@@ -1,0 +1,206 @@
+import java.io.IOException;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
+
+public class Rawan_DeleteTool {
+
+    public static void main(String[] args) {
+        if (args.length == 0 || !args[0].equalsIgnoreCase("delete")) {
+            System.out.println("Usage: java Rawan_DeleteTool delete <file_or_directory_path>");
+            return;
+        }
+
+        deleteFileOrDirectory(args);
+    }
+
+    private static void deleteFileOrDirectory(String[] args) {
+        if (args.length != 2) {
+            System.out.println("Usage: java Rawan_DeleteTool delete <file_or_directory_path>");
+            return;
+        }
+
+        Path path = Paths.get(args[1]);
+
+        if (!Files.exists(path)) {
+            System.out.println("Error: File or directory not found.");
+            return;
+        }
+
+        try {
+            if (Files.isDirectory(path)) {
+                Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
+                    @Override
+                    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                        Files.delete(file);
+                        System.out.println("Deleted file: " + file);
+                        return FileVisitResult.CONTINUE;
+                    }
+
+                    @Override
+                    public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+                        Files.delete(dir);
+                        System.out.println("Deleted directory: " + dir);
+                        return FileVisitResult.CONTINUE;
+                    }
+                });
+            } else {
+                Files.delete(path);
+                System.out.println("Deleted file: " + path);
+            }
+        } catch (DirectoryNotEmptyException e) {
+            System.out.println("Error: Directory is not empty.");
+        } catch (AccessDeniedException e) {
+            System.out.println("Error: Permission denied.");
+        } catch (IOException e) {
+            System.out.println("Error deleting file/directory: " + e.getMessage());
+        }
+    }
+}
+ ايه 
+public static void CopyFile(File source, File target) {
+        try {
+
+            if (!sourceFile.exists()) {
+                system.out.println("Source file does not exist.");
+            }
+            if (targetFile.exists()) {
+                System.out.println("Target file already exists.");
+            }
+
+            Scanner input = new Scanner(source);
+            PrintWriter output = new PrintWriter(target);
+
+            while (input.hasNextLine()) {
+                output.println(input.nextLine());
+            }
+            System.out.println("File copied successfully!");
+        } catch (Exception e) {
+            System.out.println("Error  while copying: ");
+        }
+
+    }
+public static void listFiles(String path) {
+
+        try {
+
+            File file= new File(path);
+
+            
+            if (!file.exists()) {
+                System.out.println("Error:the path does not exist.");
+            }
+
+           
+            if (!file.isDirectory()) {
+                System.out.println("Error:the path not a directory.");
+            }
+
+            
+            String[] files = file.list();
+
+            if (files == null) {
+                 System.out.println("Error: cannot access directory.");
+         
+            }
+            
+for (int i = 0; i < files.length; i++) {
+    System.out.println(files[i]);
+    
+}
+
+        } catch (Exception e) {
+            
+            
+    System.out.println("error  while processing the directory.");
+}
+    }
+}
+
+وجدان 
+import java.io.*;
+import java.nio.file.*;
+
+public class FileMove {
+
+   
+    public static void moveFile(String sourcePath, String destinationPath) {
+        try {
+            Path source = Paths.get(sourcePath);
+            Path destination = Paths.get(destinationPath);
+
+            
+            if (!Files.exists(source)) {
+                System.out.println("Error: Source file does not exist.");
+                return;
+            }
+
+            
+            if (Files.exists(destination)) {
+                System.out.println("Error: A file with the same name already exists in the destination.");
+                return;
+            }
+
+          
+            Files.move(source, destination, StandardCopyOption.REPLACE_EXISTING);
+            System.out.println("File moved successfully!");
+
+        } catch (NoSuchFileException e) {
+            System.out.println("Error: File not found.");
+        } catch (FileAlreadyExistsException e) {
+            System.out.println("Error: Destination file already exists.");
+        } catch (DirectoryNotEmptyException e) {
+            System.out.println("Error: Cannot move because the destination directory is not empty.");
+        } catch (SecurityException e) {
+            System.out.println("Error: Permission denied.");
+        } catch (IOException e) {
+            System.out.println("Error: Unable to move the file.");
+        }
+    }
+
+    public static void main(String[] args) {
+        if (args.length < 3) {
+            System.out.println("Usage: move <sourcePath> <destinationPath>");
+            return;
+        }
+
+        if (args[0].equals("move")) {
+            moveFile(args[1], args[2]);
+        }
+    }
+}
+بيان 
+public static void help(){
+        System.out.println("Available Commands : ");
+        System.out.println("help : show commands");
+        System.out.println("list : list files");
+        System.out.println("copy : copy file");
+        System.out.println("move : move file");
+        System.out.println("delete : delete file");
+        System.out.println("rename : rename file");
+        System.out.println("exit : exit tool");
+        
+        
+        
+        
+        
+        
+    }
+ public static void rename(String oldname,String newname){
+     try {
+         File f1=new File(oldname);
+        
+         if(!f1.exists()) {
+          System.out.println("file not exists");
+            return ;
+         }
+          File f2=new File(f1.getParent(),newname);
+         if(f1.renameTo(f2)){
+             System.out.println("Rename");
+         }
+         else{
+             System.out.println("Rename failed");
+         }
+     }catch (Exception e){
+         System.out.println("Error");
+     }
+ }
